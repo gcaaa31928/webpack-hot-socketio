@@ -1,7 +1,13 @@
 module.default = class HookHandler {
-	constructor(compiler, opts) {
+	constructor(compiler, socketHandler, opts) {
 		this.lastStatsResult = null;
 		this.opts = opts;
+		this.socketHandler = socketHandler;
+		this.socketHandler.listen('connect', () => {
+			if (this.lastStatsResult) {
+				this.socketHandler.sendStats('sync', this.lastStatsResult);
+			}
+		});
 		this.log = this.opts.log;
 		if (compiler.hooks) {
 			compiler.hooks.invalid.tap('webpack-hot-socketio', this.onInvalid);
@@ -15,6 +21,7 @@ module.default = class HookHandler {
 		if (this.log) {
 			this.log('webpack building...');
 		}
+		this.socketHandler.sendStats('building');
 	}
 	onDone(statsResult) {
 		this.lastStatsResult = statsResult;
