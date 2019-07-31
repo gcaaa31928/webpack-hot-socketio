@@ -1,6 +1,6 @@
 const { getModuleMap, extractBundles } = require('./helper.js');
 
-module.default = class SocketHandler {
+module.exports = class SocketHandler {
 	constructor(io, opts) {
 		this.io = io;
 		this.opts = opts;
@@ -16,7 +16,7 @@ module.default = class SocketHandler {
 					name: stats.name,
 					action: action,
 					time: stats.time,
-					hash;  stats.hash,
+					hash:  stats.hash,
 					warnings: stats.warnings || [],
 					errors: stasts.errors || [],
 					modules: getModuleMap(stat.modules)

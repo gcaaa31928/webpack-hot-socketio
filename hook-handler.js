@@ -1,4 +1,4 @@
-module.default = class HookHandler {
+module.exports = class HookHandler {
 	constructor(compiler, socketHandler, opts) {
 		this.lastStatsResult = null;
 		this.opts = opts;
@@ -10,23 +10,21 @@ module.default = class HookHandler {
 		});
 		this.log = this.opts.log;
 		if (compiler.hooks) {
-			compiler.hooks.invalid.tap('webpack-hot-socketio', this.onInvalid);
-			compiler.hooks.done.tap('webpack-hot-socketio', this.onDone);
+			compiler.hooks.invalid.tap('webpack-hot-socketio', this.onInvalid.bind(this));
+			compiler.hooks.done.tap('webpack-hot-socketio', this.onDone.bind(this));
 		} else if (compiler.plugin) {
 			compiler.plugin('invalid', this.onInvalid);
 			compiler.plugin('done', this.onDone);
 		}
 	}
 	onInvalid() {
-		if (this.log) {
-			this.log('webpack building...');
-		}
+		this.log('webpack building...');
+		this.lastStatsResult = null;
 		this.socketHandler.sendStats('building');
 	}
 	onDone(statsResult) {
+		this.log('webpack built.');
 		this.lastStatsResult = statsResult;
-		if (this.log) {
-			this.log('webpack built.');
-		}
+		this.socketHandler.sendStats('built', statsResult);
 	}
 }

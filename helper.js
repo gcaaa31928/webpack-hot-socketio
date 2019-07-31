@@ -1,5 +1,4 @@
-
-module.default = {
+module.exports = {
 	getModuleMap(modules) {
 		let map = {};
 		for (let module of modules){
