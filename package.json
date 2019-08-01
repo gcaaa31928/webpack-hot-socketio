@@ -2,5 +2,10 @@
   "name": "webpack-hot-socketio",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "memory-fs": "^0.4.1",
+    "query-string": "^6.8.2",
+    "socket.io-client": "^2.2.0"
+  }
 }

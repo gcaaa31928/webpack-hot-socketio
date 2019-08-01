@@ -9,7 +9,7 @@ module.exports = class SocketHandler {
 		return this.io.on(eventName, fn);
 	}
 	sendStats(action, stats) {
-		let eventName = this.opts.eventName || '__webpack_message';
+		let eventName = this.opts.eventName;
 		if (stats) {
 			for (let bundle of extractBundles(stats)) {
 				this.io.emit(eventName, {
