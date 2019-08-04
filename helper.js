@@ -1,6 +1,9 @@
 module.exports = {
 	getModuleMap(modules) {
 		let map = {};
+		if (!modules) {
+			return map;
+		}
 		for (let module of modules){
 			map[module.id] = module.name;
 		}

@@ -1,3 +1,4 @@
+const fs = require('fs');
 module.exports = class HookHandler {
 	constructor(compiler, socketHandler, opts) {
 		this.lastStatsResult = null;
@@ -12,9 +13,6 @@ module.exports = class HookHandler {
 		if (compiler.hooks) {
 			compiler.hooks.invalid.tap('webpack-hot-socketio', this.onInvalid.bind(this));
 			compiler.hooks.done.tap('webpack-hot-socketio', this.onDone.bind(this));
-			compiler.hooks.afterEmit.tap('webpack-hot-socketio', function(compilation) {
-				console.log(Object.keys(compilation.assets));
-			});
 		} else if (compiler.plugin) {
 			compiler.plugin('invalid', this.onInvalid);
 			compiler.plugin('done', this.onDone);

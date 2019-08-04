@@ -1,0 +1,20 @@
+{
+	"name": "example",
+	"version": "1.0.0",
+	"description": "* Install deps",
+	"main": "bundle.js",
+	"dependencies": {
+		"console-stamp": "^0.2.9",
+		"socket.io": "^2.2.0",
+		"webpack": "^4.39.1",
+		"webpack-hot-socketio": "file:.."
+	},
+	"devDependencies": {},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node server.js",
+		"start:multientry": "WEBPACK_CONFIG=./webpack.config.multientry node server.js"
+	},
+	"author": "",
+	"license": "ISC"
+}

@@ -8,9 +8,17 @@ module.exports = class SocketHandler {
 	listen(eventName, fn) {
 		return this.io.on(eventName, fn);
 	}
-	sendStats(action, stats) {
+	sendStats(action, statsResult) {
 		let eventName = this.opts.eventName;
-		if (stats) {
+		if (statsResult) {
+			let stats = statsResult.toJson({
+				all: false,
+				cached: true,
+				children: true,
+				modules: true,
+				timings: true,
+				hash: true,
+			});
 			for (let bundle of extractBundles(stats)) {
 				this.io.emit(eventName, {
 					name: stats.name,
@@ -18,8 +26,8 @@ module.exports = class SocketHandler {
 					time: stats.time,
 					hash:  stats.hash,
 					warnings: stats.warnings || [],
-					errors: stasts.errors || [],
-					modules: getModuleMap(stat.modules)
+					errors: stats.errors || [],
+					modules: getModuleMap(stats.modules)
 				});
 			}
 		} else {

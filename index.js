@@ -10,7 +10,7 @@ module.exports = function webpackHotSocket(compiler, io, opts) {
 
 	const socketHandler = new SocketHandler(io, opts);
 	const hookHandler = new HookHandler(compiler, socketHandler, opts);
-	setFs(compiler);
+	// setFs(compiler);
 	compiler.watch(opts.watchOpts || {}, (err) => {
 		if (err) {
 			this.log(err.stack || err);

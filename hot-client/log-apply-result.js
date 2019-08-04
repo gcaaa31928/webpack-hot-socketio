@@ -3,7 +3,8 @@
  * Original copyright Tobias Koppers @sokra (MIT license)
  */
 
-module.exports = function(updatedModules, renewedModules, log) {
+module.exports = function(updatedModules, renewedModules, context) {
+	var { log } = context;
 	var unacceptedModules = updatedModules.filter(function(moduleId) {
 		return renewedModules && renewedModules.indexOf(moduleId) < 0;
 	});

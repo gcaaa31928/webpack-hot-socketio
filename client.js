@@ -1,5 +1,6 @@
 /* global __resourceQuery __webpack_public_path__ */
 
+var context = {};
 
 var options = {
 	path: '',
@@ -13,23 +14,21 @@ var options = {
 	port: 80
 };
 
-var log = function(message) {
-	if (options.log === true) {
-		console.log(message);
-	}
-};
-
-var warn = function(message) {
-	if (options.warn === true) {
-		console.warn(message);
-	}
-}
+var log, warn;
 
 if (__resourceQuery) {
 	var queryString = require('query-string');
 	var overrides = queryString.parse(__resourceQuery);
 	setOverrides(overrides);
-	connect();
+	log = options.log ? console.log.bind(console) : function() {};
+	warn = options.warn ? console.warn.bind(console) : function() {};
+	setContext();
+}
+
+function setContext() {
+	context.opts = options;
+	context.log = log;
+	context.warn = warn;
 }
 
 function setOverrides(overrides) {
@@ -63,7 +62,7 @@ function connect() {
 		try {
 			processWebpackMessage(data);
 		} catch (e) {
-			wawrn('Invalid HMR info: ' + data + '\n' + e);
+			warn('Invalid HMR info: ' + data + '\n' + e);
 		}
 	});
 }
@@ -96,8 +95,10 @@ function processWebpackMessage(obj) {
 				applyUpdate = false;
 			}
 			if (applyUpdate) {
-				processUpdate(obj.hash, obj.modules, options, log, warn);
+				processUpdate(obj.hash, obj.modules, context);
 			}
 			break;
 	}
 }
+
+connect();

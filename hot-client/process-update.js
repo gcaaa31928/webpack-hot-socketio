@@ -7,80 +7,88 @@
 if (!module.hot) {
 	throw new Error("[HMR] Hot Module Replacement is disabled.");
 }
-var lastHash;
+var lastHash, log, warn;
 var upToDate = function upToDate() {
 	return lastHash.indexOf(__webpack_hash__) >= 0;
 };
-module.exports = function(hash, moduleMap, opt, log, warn) {
-	var reload = opt.reload;
-	var check = function check() {
-		module.hot
-			.check()
-			.then(function(updatedModules) {
-				if (!updatedModules) {
-					log("warning", "[HMR] Cannot find update. Need to do a full reload!");
-					log(
-						"warning",
-						"[HMR] (Probably because of restarting the webpack-dev-server)"
-					);
-					return;
-				}
+function check(context) {
+	module.hot
+		.check()
+		.then(function(updatedModules) {
+			if (!updatedModules) {
+				log("warning", "[HMR] Cannot find update. Need to do a full reload!");
+				log(
+					"warning",
+					"[HMR] (Probably because of restarting the webpack-dev-server)"
+				);
+				return;
+			}
 
-				return module.hot
-					.apply({
-						ignoreUnaccepted: true,
-						ignoreDeclined: true,
-						ignoreErrored: true,
-						onUnaccepted: function(data) {
-							log(
-								"warning",
-								"Ignored an update to unaccepted module " +
-								data.chain.join(" -> ")
-							);
-						},
-						onDeclined: function(data) {
-							log(
-								"warning",
-								"Ignored an update to declined module " +
-								data.chain.join(" -> ")
-							);
-						},
-						onErrored: function(data) {
-							log("error", data.error);
-							log(
-								"warning",
-								"Ignored an error while updating module " +
-								data.moduleId +
-								" (" +
-								data.type +
-								")"
-							);
-						}
-					})
-					.then(function(renewedModules) {
-						if (!upToDate()) {
-							check();
-						}
+			return module.hot
+				.apply({
+					ignoreUnaccepted: true,
+					ignoreDeclined: true,
+					ignoreErrored: true,
+					onUnaccepted: function(data) {
+						log(
+							"warning",
+							"Ignored an update to unaccepted module " +
+							data.chain.join(" -> ")
+						);
+					},
+					onDeclined: function(data) {
+						log(
+							"warning",
+							"Ignored an update to declined module " +
+							data.chain.join(" -> ")
+						);
+					},
+					onErrored: function(data) {
+						log("error", data.error);
+						log(
+							"warning",
+							"Ignored an error while updating module " +
+							data.moduleId +
+							" (" +
+							data.type +
+							")"
+						);
+					}
+				})
+				.then(function(renewedModules) {
+					if (!upToDate()) {
+						check(context);
+					}
 
-						require("./log-apply-result")(updatedModules, renewedModules, log);
+					require("./log-apply-result")(updatedModules, renewedModules, context);
 
-						if (upToDate()) {
-							log("info", "[HMR] App is up to date.");
-						}
-					});
-			})
-			.catch(function(err) {
-				var status = module.hot.status();
-				if (["abort", "fail"].indexOf(status) >= 0) {
-					log(
-						"warning",
-						"[HMR] Cannot check for update. Need to do a full reload!"
-					);
-					log("warning", "[HMR] " + log.formatError(err));
-				} else {
-					log("warning", "[HMR] Update check failed: " + log.formatError(err));
-				}
-			});
-	};
+					if (upToDate()) {
+						log("info", "[HMR] App is up to date.");
+					}
+				});
+		})
+		.catch(function(err) {
+			var status = module.hot.status();
+			if (["abort", "fail"].indexOf(status) >= 0) {
+				log(
+					"warning",
+					"[HMR] Cannot check for update. Need to do a full reload!"
+				);
+				log("warning", "[HMR] " + log.formatError(err));
+			} else {
+				log("warning", "[HMR] Update check failed: " + err);
+			}
+		});
+};
+module.exports = function(hash, moduleMap, context) {
+	let { opts } = context;
+	log = context.log;
+	warn = context.warn;
+	var reload = opts.reload;
+	lastHash = hash;
+	if (!upToDate() && module.hot.status() === 'idle') {
+		log('[HMR] Checking for updates on the server...');
+		check(context);
+	}
 	log("info", "[HMR] Waiting for update signal from WDS...");
 }
