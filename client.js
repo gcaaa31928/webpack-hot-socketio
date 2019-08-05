@@ -38,6 +38,8 @@ function setOverrides(overrides) {
 	options.path = overrides.path || options.path;
 	options.timeout = overrides.timeout || options.timeout;
 	options.port = overrides.port || options.port;
+	options.eventName = overrides.eventName || options.eventName;
+	options.name = overrides.name || options.name;
 	if (overrides.reload) {
 		options.reload = overrides.reload !== 'false';
 	}
@@ -50,7 +52,7 @@ function setOverrides(overrides) {
 function connect() {
 	var io = require('socket.io-client');
 	var serverPath = window.location.protocol + '//' + window.location.hostname + ':' + options.port;
-	var socket = io(serverPath, {
+	var socket = io.connect(serverPath, {
 		timeout: options.timeout,
 		path: options.path,
 		reconnection: options.reconnect

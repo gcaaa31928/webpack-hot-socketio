@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "memory-fs": "^0.4.1",
     "query-string": "^6.8.2",
     "socket.io-client": "^2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.0",
+    "sinon": "^7.4.0"
   }
 }
