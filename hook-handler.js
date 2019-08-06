@@ -14,8 +14,8 @@ module.exports = class HookHandler {
 			compiler.hooks.invalid.tap('webpack-hot-socketio', this.onInvalid.bind(this));
 			compiler.hooks.done.tap('webpack-hot-socketio', this.onDone.bind(this));
 		} else if (compiler.plugin) {
-			compiler.plugin('invalid', this.onInvalid);
-			compiler.plugin('done', this.onDone);
+			compiler.plugin('invalid', this.onInvalid.bind(this));
+			compiler.plugin('done', this.onDone.bind(this));
 		}
 	}
 	onInvalid() {
