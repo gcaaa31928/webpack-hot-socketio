@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --exit",
+    "test:coverage": "nyc mocha --exit --timeout=3000"
   },
   "dependencies": {
     "memory-fs": "^0.4.1",
@@ -13,7 +14,9 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "coveralls": "^3.0.6",
     "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
     "sinon": "^7.4.0",
     "socket.io": "^2.2.0",
     "webpack": "^4.39.1"
