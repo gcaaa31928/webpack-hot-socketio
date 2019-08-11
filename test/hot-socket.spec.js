@@ -103,5 +103,33 @@ describe('socket', function() {
 			socket.on('__webpack_hot_socketio__', verify);
 			socket.emit('connect');
 		});
+		it('should fallback to the compilation name if no stats name is provided and there is one stats object', function(done) {
+			function verify(data){
+				sinon.assert.match('compilation', data.name);
+				done();
+			}
+			socket.on('__webpack_hot_socketio__', verify);
+			compiler.emit(
+				'done',
+				stats({
+					time: 100,
+					hash: 'readsdfsdfs',
+					warnings: false,
+					errors: false,
+					modules: [],
+				})
+			);
+		});
+		it('should notify all clients', function(done) {
+			let verifyCount = 0;
+			function verify(data) {
+				if (++verifyCount >= 2) {
+					done();
+				}
+			}
+			socket.on('__webpack_hot_socketio__', verify);
+			socket.on('__webpack_hot_socketio__', verify);
+			compiler.emit('invalid');
+		});
 	});
 });

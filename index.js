@@ -2,7 +2,7 @@ const HookHandler = require('./hook-handler');
 const SocketHandler = require('./socket-handler');
 const setFs = require('./lib/fs');
 
-module.exports = function webpackHotSocket(compiler, io, opts) {
+module.exports = function webpackHotSocket(compiler, io, opts, builtCallback) {
 	opts = opts || {};
 	opts.eventName = opts.eventName || '__webpack_hot_socketio__';
 	opts.log = opts.log || console.log;
@@ -18,5 +18,6 @@ module.exports = function webpackHotSocket(compiler, io, opts) {
 				this.log(err.details);
 			}
 		}
+		builtCallback(err);
 	});
 }
