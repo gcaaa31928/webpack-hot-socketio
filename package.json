@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha --exit",
-    "test:coverage": "nyc mocha --exit --timeout=3000"
+    "test:coverage": "nyc mocha --exit --timeout=3000",
+	"ci:coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
     "memory-fs": "^0.4.1",
