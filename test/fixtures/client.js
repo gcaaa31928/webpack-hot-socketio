@@ -1,1 +1,1 @@
-let random = function random() { [native code] };
+let random = 0.4586750382305147;
