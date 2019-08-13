@@ -6,13 +6,16 @@
   "scripts": {
     "test": "mocha --exit",
     "test:coverage": "nyc mocha --exit --timeout=3000",
-	"ci:test": "nyc --reporter=html --reporter=text mocha --exit",
-	"ci:coverage": "nyc report --reporter=text-lcov | coveralls"
+    "ci:test": "nyc --reporter=html --reporter=text mocha --exit",
+    "ci:coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
+    "ansi-html": "^0.0.7",
+    "html-entities": "^1.2.1",
     "memory-fs": "^0.4.1",
     "query-string": "^6.8.2",
-    "socket.io-client": "^2.2.0"
+    "socket.io-client": "^2.2.0",
+    "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",

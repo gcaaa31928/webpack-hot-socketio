@@ -9,9 +9,11 @@ if (!module.hot) {
 }
 var lastHash, log, warn;
 var upToDate = function upToDate() {
+	console.log(lastHash, __webpack_hash__);
 	return lastHash.indexOf(__webpack_hash__) >= 0;
 };
 function check(context) {
+	console.trace(context);
 	module.hot
 		.check()
 		.then(function(updatedModules) {
@@ -19,7 +21,7 @@ function check(context) {
 				log("warning", "[HMR] Cannot find update. Need to do a full reload!");
 				log(
 					"warning",
-					"[HMR] (Probably because of restarting the webpack-dev-server)"
+					"[HMR] (Probably because of restarting the socket.io server)"
 				);
 				return;
 			}

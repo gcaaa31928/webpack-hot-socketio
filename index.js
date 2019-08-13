@@ -4,12 +4,11 @@ const setFs = require('./lib/fs');
 
 module.exports = function webpackHotSocket(compiler, io, opts, builtCallback) {
 	opts = opts || {};
+	builtCallback = builtCallback || function() {};
 	opts.eventName = opts.eventName || '__webpack_hot_socketio__';
 	opts.log = opts.log || console.log;
 	this.log = opts.log;
 
-	const socketHandler = new SocketHandler(io, opts);
-	const hookHandler = new HookHandler(compiler, socketHandler, opts);
 	// setFs(compiler);
 	compiler.watch(opts.watchOpts || {}, (err) => {
 		if (err) {
@@ -18,6 +17,8 @@ module.exports = function webpackHotSocket(compiler, io, opts, builtCallback) {
 				this.log(err.details);
 			}
 		}
+		const socketHandler = new SocketHandler(io, opts);
+		const hookHandler = new HookHandler(compiler, socketHandler, opts);
 		builtCallback(err);
 	});
 }
