@@ -33,12 +33,10 @@ describe('client', function() {
 	context('with default options', function() {
 		beforeEach(function setup() {
 			global.__resourceQuery = '?quiet=true';
-			global.document = {};
 			global.window = {
 				location: {
 					protocol: 'http:',
 					hostname: 'localhost',
-
 				}
 			};
 			loadClient();
@@ -84,7 +82,6 @@ describe('client', function() {
 	context('with default options', function() {
 		beforeEach(function setup() {
 			global.__resourceQuery = '?quiet=true&name=name';
-			global.document = {};
 			global.window = {
 				location: {
 					protocol: 'http:',

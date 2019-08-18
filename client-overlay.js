@@ -4,8 +4,11 @@
  */
 /*eslint-env browser*/
 
-var clientOverlay = document.createElement('div');
-clientOverlay.id = 'webpack-hot-socketio-clientOverlay';
+var clientOverlay = null;
+if (document.createElement) {
+	clientOverlay = document.createElement('div');
+	clientOverlay.id = 'webpack-hot-socketio-clientOverlay';
+}
 var styles = {
   background: 'rgba(0,0,0,0.85)',
   color: '#e8e8e8',

@@ -89,8 +89,31 @@ function connect() {
 
 var processUpdate = require('./hot-client/process-update');
 
+function doApplyUpdate(obj) {
+	if (obj.name && options.name && obj.name !== options.name) {
+		return;
+	}
+	var applyUpdate = true;
+	if (obj.errors.length > 0) {
+		if (reporter) {
+			reporter.problems('errors', obj);
+		}
+		applyUpdate = false;
+	} else if (obj.warnings.length > 0) {
+		var overlayShown = reporter.problems('warnings', obj);
+		applyUpdate = overlayShown;
+	} else {
+		if (reporter) {
+			reporter.cleanProblemsCache();
+			reporter.success();
+		}
+	}
+	if (applyUpdate) {
+		processUpdate(obj.hash, obj.modules, context);
+	}
+}
+
 function processWebpackMessage(obj) {
-	console.log('process');
 
 	switch (obj.action) {
 		case 'building':
@@ -107,29 +130,10 @@ function processWebpackMessage(obj) {
 				obj.time +
 				'ms'
 			);
-			// fail through
+			doApplyUpdate(obj);
+			break;
 		case 'sync':
-			if (obj.name && options.name && obj.name !== options.name) {
-				return;
-			}
-			var applyUpdate = true;
-			if (obj.errors.length > 0) {
-				if (reporter) {
-					reporter.problems('errors', obj);
-				}
-				applyUpdate = false;
-			} else if (obj.warnings.length > 0) {
-				var overlayShown = reporter.problems('warnings', obj);
-				applyUpdate = overlayShown;
-			} else {
-				if (reporter) {
-					reporter.cleanProblemsCache();
-					reporter.success();
-				}
-			}
-			if (applyUpdate) {
-				processUpdate(obj.hash, obj.modules, context);
-			}
+			doApplyUpdate(obj);
 			break;
 	}
 }

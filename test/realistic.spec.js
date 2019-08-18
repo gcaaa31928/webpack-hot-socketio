@@ -1,7 +1,7 @@
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const hotSocketIo = require('../index.js');
+const fs = require('fs');
 const server = require('http').createServer();
 const io = require('socket.io')(server);
 const ioClient = require('socket.io-client');
@@ -9,24 +9,43 @@ const sinon = require('sinon');
 const expect = require('chai').expect;
 const PORT = 3003;
 
-let compiler, clientCode;
+let compiler, clientCode = path.join(__dirname, './fixtures/client.js');
 describe('realistic compiler', function() {
 	before((done) => {
+		let firstHash, alreadyWrite = false;
 		done = doneOnce(done);
-		clientCode = path.resolve(__dirname, './fixtures/client.js');
 		compiler = webpack({
 			mode: 'development',
 			entry: [
-				require.resolve('./fixtures/client.js'),
-				require.resolve('../client.js'),
+				clientCode,
+				'../client.js',
 			],
 			plugins: [new webpack.HotModuleReplacementPlugin()],
+			context: '/tmp',
+			output: {
+				path: '/tmp',
+				filename: 'bundle.js',
+				hotUpdateChunkFilename: 'hot-update.js',
+				hotUpdateMainFilename: 'hot-update.json'
+			},
 		});
 		server.listen(PORT);
-		hotSocketIo(compiler, io, {}, done);
+		let watching = hotSocketIo(compiler, io, { log: function() {} }, (err, stats) => {
+			if (!firstHash) {
+				firstHash = stats.hash;
+			}
+			if (firstHash === stats.hash) {
+				if (!alreadyWrite) {
+					fs.writeFileSync(clientCode, `let random = ${Math.random()};\n`);
+					alreadyWrite = true;
+				}
+			} else {
+				done();
+			}
+		});
 	});
 	describe('first build', function() {
-		it('should publish sync event', function(done) {
+		it('should publish sync event when hot updated modules come in', function(done) {
 			let socketClient = ioClient(`http://localhost:${PORT}`);
 			function verify (data) {
 				expect(data.action).to.equal('sync');

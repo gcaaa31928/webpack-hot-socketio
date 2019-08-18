@@ -6,6 +6,9 @@ function stats(data) {
 	return {
 		compilation: {
 			name: 'compilation',
+			modules: [{
+				hotUpdate: true
+			}]
 		},
 		toJson: function() {
 			return data;
@@ -25,7 +28,7 @@ describe('socket', function() {
 		compiler.watch = function() {};
 		socket = new EventEmitter();
 		compiler.plugin = compiler.on;
-		webpackHotSocket(compiler, socket, {});
+		webpackHotSocket(compiler, socket, { log: function() {} });
 	});
 	afterEach(function() {
 		s.restore();
