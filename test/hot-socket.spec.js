@@ -2,12 +2,12 @@ const sinon = require('sinon');
 const EventEmitter = require('events');
 const webpackHotSocket = require('../index');
 
-function stats(data) {
+function stats(data, hotUpdate = true) {
 	return {
 		compilation: {
 			name: 'compilation',
 			modules: [{
-				hotUpdate: true
+				hotUpdate: hotUpdate
 			}]
 		},
 		toJson: function() {
@@ -22,7 +22,6 @@ describe('socket', function() {
 	let compiler;
 
 	beforeEach(function() {
-		s = sinon.createSandbox({ useFakeTimers: true });
 		// inject
 		compiler = new EventEmitter();
 		compiler.watch = function() {};
@@ -31,7 +30,6 @@ describe('socket', function() {
 		webpackHotSocket(compiler, socket, { log: function() {} });
 	});
 	afterEach(function() {
-		s.restore();
 	});
 
 	context('with default options', function() {
@@ -133,6 +131,24 @@ describe('socket', function() {
 			socket.on('__webpack_hot_socketio__', verify);
 			socket.on('__webpack_hot_socketio__', verify);
 			compiler.emit('invalid');
+		});
+		it('should not notify client if stats is not hot update', function(done) {
+			let processUpdate = sinon.stub();
+			socket.on('__webpack_hot_socketio__', processUpdate);
+			compiler.emit(
+				'done',
+				stats({
+					time: 100,
+					hash: 'readsdfsdfs',
+					warnings: false,
+					errors: false,
+					modules: [],
+				}, false)
+			);
+			setTimeout(function() {
+				sinon.assert.neverCalledWith(processUpdate);
+				done();
+			}, 100);
 		});
 	});
 });
