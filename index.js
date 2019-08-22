@@ -24,4 +24,4 @@ module.exports = function webpackHotSocket(compiler, io, opts, builtCallback) {
 		}
 		builtCallback(err, stats);
 	});
-}
+};

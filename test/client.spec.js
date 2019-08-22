@@ -3,7 +3,7 @@ const EventEmitter = require('events');
 const io = require('socket.io-client');
 
 describe('client', function() {
-	let processUpdate, clientOverlay;
+	let processUpdate, clientOverlay, s;
 
 	beforeEach(function() {
 		s = sinon.createSandbox({ useFakeTimers: true });
@@ -43,7 +43,7 @@ describe('client', function() {
 			global.window = {
 				location: {
 					protocol: 'http:',
-					hostname: 'localhost',
+					hostname: 'localhost'
 				}
 			};
 			global.document = {};
@@ -57,7 +57,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(processUpdate);
 		});
@@ -69,7 +69,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(processUpdate);
 		});
@@ -81,7 +81,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: ['broken'],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.notCalled(processUpdate);
 		});
@@ -93,7 +93,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: ["This isn't great, but it's not terrible"],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(processUpdate);
 		});
@@ -105,12 +105,12 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: ['Something broke', 'Actually, 2 things broke'],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(clientOverlay.showProblems);
 			sinon.assert.calledWith(clientOverlay.showProblems, 'errors', [
 				'Something broke',
-				'Actually, 2 things broke',
+				'Actually, 2 things broke'
 			]);
 		});
 		it('should hide overlay after errored build fixed', function() {
@@ -121,7 +121,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: ['Something broke', 'Actually, 2 things broke'],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			socket.emit('__webpack_hot_socketio__', {
 				action: 'built',
@@ -129,7 +129,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(clientOverlay.showProblems);
 			sinon.assert.calledOnce(clientOverlay.clear);
@@ -142,7 +142,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: ['Something broke', 'Actually, 2 things broke'],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			socket.emit('__webpack_hot_socketio__', {
 				action: 'built',
@@ -150,7 +150,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: ["This isn't great, but it's not terrible"],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(clientOverlay.showProblems);
 			sinon.assert.calledOnce(clientOverlay.clear);
@@ -163,7 +163,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: ["This isn't great, but it's not terrible"],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.notCalled(clientOverlay.showProblems);
 		});
@@ -175,7 +175,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: ["This isn't great, but it's not terrible"],
-				modules: [],
+				modules: []
 			});
 			socket.emit('__webpack_hot_socketio__', {
 				action: 'built',
@@ -183,7 +183,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: ['Something broke', 'Actually, 2 things broke'],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(clientOverlay.showProblems);
 		});
@@ -195,8 +195,7 @@ describe('client', function() {
 			global.window = {
 				location: {
 					protocol: 'http:',
-					hostname: 'localhost',
-
+					hostname: 'localhost'
 				}
 			};
 			loadClient();
@@ -210,7 +209,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.notCalled(processUpdate);
 		});
@@ -223,7 +222,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.notCalled(processUpdate);
 		});
@@ -235,8 +234,7 @@ describe('client', function() {
 			global.window = {
 				location: {
 					protocol: 'http:',
-					hostname: 'localhost',
-
+					hostname: 'localhost'
 				}
 			};
 			global.document = {};
@@ -250,12 +248,12 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: ['Something broke', 'Actually, 2 things broke'],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(clientOverlay.showProblems);
 			sinon.assert.calledWith(clientOverlay.showProblems, 'errors', [
 				'Something broke',
-				'Actually, 2 things broke',
+				'Actually, 2 things broke'
 			]);
 		});
 		it('should hide overlay after errored build fixed', function() {
@@ -266,7 +264,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: ['Something broke', 'Actually, 2 things broke'],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			socket.emit('__webpack_hot_socketio__', {
 				action: 'built',
@@ -274,7 +272,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(clientOverlay.showProblems);
 			sinon.assert.calledOnce(clientOverlay.clear);
@@ -287,11 +285,11 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: ["This isn't great, but it's not terrible"],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(clientOverlay.showProblems);
 			sinon.assert.calledWith(clientOverlay.showProblems, 'warnings', [
-				"This isn't great, but it's not terrible",
+				"This isn't great, but it's not terrible"
 			]);
 		});
 		it('should hide overlay after warning build fixed', function() {
@@ -302,7 +300,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: ["This isn't great, but it's not terrible"],
-				modules: [],
+				modules: []
 			});
 			socket.emit('__webpack_hot_socketio__', {
 				action: 'built',
@@ -310,7 +308,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledOnce(clientOverlay.showProblems);
 			sinon.assert.calledOnce(clientOverlay.clear);
@@ -323,7 +321,7 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: ['Something broke', 'Actually, 2 things broke'],
 				warnings: [],
-				modules: [],
+				modules: []
 			});
 			socket.emit('__webpack_hot_socketio__', {
 				action: 'built',
@@ -331,13 +329,11 @@ describe('client', function() {
 				hash: 'deadbeeffeddad',
 				errors: [],
 				warnings: ["This isn't great, but it's not terrible"],
-				modules: [],
+				modules: []
 			});
 			sinon.assert.calledTwice(clientOverlay.showProblems);
 			sinon.assert.calledWith(clientOverlay.showProblems, 'errors');
 			sinon.assert.calledWith(clientOverlay.showProblems, 'warnings');
 		});
-
 	});
-
 });

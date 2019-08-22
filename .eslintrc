@@ -1,0 +1,17 @@
+{
+	"extends": "eslint:recommended",
+	"env": {
+		"node": true,
+		"mocha": true
+	},
+	"plugins": [
+		"prettier",
+	],
+	"parser": "babel-eslint",
+	"rules": {
+		"no-console": "off",
+		"prettier/prettier": [
+			"error"
+		]
+	}
+}

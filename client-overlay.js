@@ -25,7 +25,7 @@ var styles = {
 	bottom: 0,
 	overflow: 'auto',
 	dir: 'ltr',
-	textAlign: 'left',
+	textAlign: 'left'
 };
 
 var ansiHTML = require('ansi-html');
@@ -39,7 +39,7 @@ var colors = {
 	magenta: 'f840b7',
 	cyan: '0ad8e9',
 	lightgrey: 'ebe7e3',
-	darkgrey: '6d7891',
+	darkgrey: '6d7891'
 };
 
 var Entities = require('html-entities').AllHtmlEntities;
@@ -68,16 +68,16 @@ function clear() {
 function problemType(type) {
 	var problemColors = {
 		errors: colors.red,
-		warnings: colors.yellow,
+		warnings: colors.yellow
 	};
 	var color = problemColors[type] || colors.red;
 	return (
-	'<span style="background-color:#' +
+		'<span style="background-color:#' +
 		color +
 		'; color:#000000; padding:3px 6px; border-radius: 4px;">' +
 		type.slice(0, -1).toUpperCase() +
 		'</span>'
-);
+	);
 }
 
 module.exports = function(options) {
@@ -98,7 +98,7 @@ module.exports = function(options) {
 
 	return {
 		showProblems: showProblems,
-		clear: clear,
+		clear: clear
 	};
 };
 

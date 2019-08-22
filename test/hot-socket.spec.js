@@ -6,18 +6,19 @@ function stats(data, hotUpdate = true) {
 	return {
 		compilation: {
 			name: 'compilation',
-			modules: [{
-				hotUpdate: hotUpdate
-			}]
+			modules: [
+				{
+					hotUpdate: hotUpdate
+				}
+			]
 		},
 		toJson: function() {
 			return data;
-		},
+		}
 	};
 }
 
 describe('socket', function() {
-	let processUpdate;
 	let socket;
 	let compiler;
 
@@ -29,20 +30,19 @@ describe('socket', function() {
 		compiler.plugin = compiler.on;
 		webpackHotSocket(compiler, socket, { log: function() {} });
 	});
-	afterEach(function() {
-	});
+	afterEach(function() {});
 
 	context('with default options', function() {
 		it('should notify clients when bundle rebuild begins', function(done) {
-			function verify (data) {
-				sinon.assert.match({ action: 'building'}, data);
+			function verify(data) {
+				sinon.assert.match({ action: 'building' }, data);
 				done();
 			}
 			socket.on('__webpack_hot_socketio__', verify);
 			compiler.emit('invalid');
 		});
-		it ('should notify clients when bundle is complete', function(done) {
-			function verify (data) {
+		it('should notify clients when bundle is complete', function(done) {
+			function verify(data) {
 				sinon.assert.match('built', data.action);
 				done();
 			}
@@ -54,7 +54,7 @@ describe('socket', function() {
 					hash: 'redeadfdffd',
 					warnings: false,
 					errors: false,
-					modules: [],
+					modules: []
 				})
 			);
 		});
@@ -73,16 +73,16 @@ describe('socket', function() {
 							hash: 'readsdfsdfs',
 							warnings: false,
 							errors: false,
-							modules: [],
+							modules: []
 						},
 						{
 							time: 150,
 							hash: 'wefwfwwef',
 							warnings: false,
 							errors: false,
-							modules: [],
-						},
-					],
+							modules: []
+						}
+					]
 				})
 			);
 		});
@@ -98,14 +98,14 @@ describe('socket', function() {
 					hash: 'readsdfsdfs',
 					warnings: false,
 					errors: false,
-					modules: [],
+					modules: []
 				})
 			);
 			socket.on('__webpack_hot_socketio__', verify);
 			socket.emit('connect');
 		});
 		it('should fallback to the compilation name if no stats name is provided and there is one stats object', function(done) {
-			function verify(data){
+			function verify(data) {
 				sinon.assert.match('compilation', data.name);
 				done();
 			}
@@ -117,13 +117,13 @@ describe('socket', function() {
 					hash: 'readsdfsdfs',
 					warnings: false,
 					errors: false,
-					modules: [],
+					modules: []
 				})
 			);
 		});
 		it('should notify all clients', function(done) {
 			let verifyCount = 0;
-			function verify(data) {
+			function verify() {
 				if (++verifyCount >= 2) {
 					done();
 				}
@@ -137,13 +137,16 @@ describe('socket', function() {
 			socket.on('__webpack_hot_socketio__', processUpdate);
 			compiler.emit(
 				'done',
-				stats({
-					time: 100,
-					hash: 'readsdfsdfs',
-					warnings: false,
-					errors: false,
-					modules: [],
-				}, false)
+				stats(
+					{
+						time: 100,
+						hash: 'readsdfsdfs',
+						warnings: false,
+						errors: false,
+						modules: []
+					},
+					false
+				)
 			);
 			setTimeout(function() {
 				sinon.assert.neverCalledWith(processUpdate);

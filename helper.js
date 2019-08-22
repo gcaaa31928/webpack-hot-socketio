@@ -4,7 +4,7 @@ module.exports = {
 		if (!modules) {
 			return map;
 		}
-		for (let module of modules){
+		for (let module of modules) {
 			map[module.id] = module.name;
 		}
 		return map;

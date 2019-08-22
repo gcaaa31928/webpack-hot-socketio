@@ -1,4 +1,4 @@
-/* global __resourceQuery __webpack_public_path__ */
+/* global __resourceQuery window */
 
 var singletonKey = '__webpack_hot_socketio_reporter__';
 var reporter;
@@ -69,7 +69,12 @@ function setOverrides(overrides) {
 
 function connect() {
 	var io = require('socket.io-client');
-	var serverPath = window.location.protocol + '//' + window.location.hostname + ':' + options.port;
+	var serverPath =
+		window.location.protocol +
+		'//' +
+		window.location.hostname +
+		':' +
+		options.port;
 	var socket = io.connect(serverPath, {
 		timeout: options.timeout,
 		path: options.path,
@@ -114,21 +119,19 @@ function doApplyUpdate(obj) {
 }
 
 function processWebpackMessage(obj) {
-
 	switch (obj.action) {
 		case 'building':
-			log('[HMR] bundle ' +
-				(obj.name ? "'" + obj.name + "' " : '') +
-				'rebuilding'
+			log(
+				'[HMR] bundle ' + (obj.name ? "'" + obj.name + "' " : '') + 'rebuilding'
 			);
 			break;
 		case 'built':
 			log(
 				'[HMR] bundle ' +
-				(obj.name ? "'" + obj.name + "' " : '') +
-				'rebuilt in ' +
-				obj.time +
-				'ms'
+					(obj.name ? "'" + obj.name + "' " : '') +
+					'rebuilt in ' +
+					obj.time +
+					'ms'
 			);
 			doApplyUpdate(obj);
 			break;
@@ -158,13 +161,13 @@ function createReporter() {
 	if (typeof document !== 'undefined' && options.overlay) {
 		overlay = require('./client-overlay')({
 			ansiColors: options.ansiColors,
-			overlayStyles: options.overlayStyles,
+			overlayStyles: options.overlayStyles
 		});
 	}
 
 	var styles = {
 		errors: 'color: #ff0000;',
-		warnings: 'color: #999933;',
+		warnings: 'color: #999933;'
 	};
 	var previousProblems = null;
 	function log(type, obj) {
@@ -219,6 +222,6 @@ function createReporter() {
 		},
 		useCustomOverlay: function(customOverlay) {
 			overlay = customOverlay;
-		},
+		}
 	};
 }

@@ -38,7 +38,7 @@ module.exports = class SocketHandler {
 				children: true,
 				modules: true,
 				timings: true,
-				hash: true,
+				hash: true
 			});
 
 			// For multi-compiler, stats will be an object with a 'children' array of stats
@@ -56,17 +56,17 @@ module.exports = class SocketHandler {
 				}
 				this.log(
 					'webpack built ' +
-					(name ? name + ' ' : '') +
-					stats.hash +
-					' in ' +
-					stats.time +
-					'ms'
+						(name ? name + ' ' : '') +
+						stats.hash +
+						' in ' +
+						stats.time +
+						'ms'
 				);
 				this.io.emit(eventName, {
 					name: name,
 					action: action,
 					time: stats.time,
-					hash:  stats.hash,
+					hash: stats.hash,
 					warnings: stats.warnings || [],
 					errors: stats.errors || [],
 					modules: getModuleMap(stats.modules)

@@ -5,21 +5,19 @@ const fs = require('fs');
 const server = require('http').createServer();
 const io = require('socket.io')(server);
 const ioClient = require('socket.io-client');
-const sinon = require('sinon');
 const expect = require('chai').expect;
 const PORT = 3003;
 
-let compiler, clientCode = path.join(__dirname, './fixtures/client.js');
+let compiler,
+	clientCode = path.join(__dirname, './fixtures/client.js');
 describe('realistic compiler', function() {
-	before((done) => {
-		let firstHash, alreadyWrite = false;
+	before(done => {
+		let firstHash,
+			alreadyWrite = false;
 		done = doneOnce(done);
 		compiler = webpack({
 			mode: 'development',
-			entry: [
-				clientCode,
-				'../client.js',
-			],
+			entry: [clientCode, '../client.js'],
 			plugins: [new webpack.HotModuleReplacementPlugin()],
 			context: '/tmp',
 			output: {
@@ -27,10 +25,10 @@ describe('realistic compiler', function() {
 				filename: 'bundle.js',
 				hotUpdateChunkFilename: 'hot-update.js',
 				hotUpdateMainFilename: 'hot-update.json'
-			},
+			}
 		});
 		server.listen(PORT);
-		let watching = hotSocketIo(compiler, io, { log: function() {} }, (err, stats) => {
+		hotSocketIo(compiler, io, { log: function() {} }, (err, stats) => {
 			if (!firstHash) {
 				firstHash = stats.hash;
 			}
@@ -47,7 +45,7 @@ describe('realistic compiler', function() {
 	describe('first build', function() {
 		it('should publish sync event when hot updated modules come in', function(done) {
 			let socketClient = ioClient(`http://localhost:${PORT}`);
-			function verify (data) {
+			function verify(data) {
 				expect(data.action).to.equal('sync');
 				expect(data.name).to.equal('');
 				expect(data.hash).to.be.ok;
@@ -65,7 +63,7 @@ describe('realistic compiler', function() {
 		let socketClient;
 		before(function(done) {
 			socketClient = ioClient(`http://localhost:${PORT}`);
-			socketClient.once('__webpack_hot_socketio__', (data) => {
+			socketClient.once('__webpack_hot_socketio__', data => {
 				if (data.action === 'sync') {
 					done();
 				}
@@ -73,7 +71,7 @@ describe('realistic compiler', function() {
 		});
 		it('should publish building event', function(done) {
 			let dataCollection = [];
-			let verify = (data) => {
+			let verify = data => {
 				dataCollection.push(data);
 				if (dataCollection.length <= 1) {
 					expect(data.action).to.equal('building');
@@ -87,7 +85,7 @@ describe('realistic compiler', function() {
 		});
 		it('should publish built event', function(done) {
 			let dataCollection = [];
-			let verify = (data) => {
+			let verify = data => {
 				dataCollection.push(data);
 				if (dataCollection.length > 1) {
 					expect(data.action).to.equal('built');
@@ -101,21 +99,11 @@ describe('realistic compiler', function() {
 	});
 });
 
-function waitUntil(condition, body) {
-	if (condition()) {
-		body();
-	} else {
-		setTimeout(function() {
-			waitUntil(condition, body);
-		}, 50);
-	}
-}
-
 function doneOnce(done) {
 	let doneCnt = 0;
 	return function() {
 		if (++doneCnt <= 1) {
 			done();
 		}
-	}
+	};
 }
