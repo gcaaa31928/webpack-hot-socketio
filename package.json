@@ -1,6 +1,6 @@
 {
 	"name": "webpack-hot-socketio",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Webpack hot reloading you can serve your own server, and used socket.io server to hot reload",
 	"engines": {
 		"node": "^10"
