@@ -51,7 +51,6 @@ module.exports = class SocketHandler {
 					name = statsResult.compilation.name || '';
 				}
 				if (!isHotUpdate(statsResult.compilation.modules)) {
-					this.log('no hot update', action);
 					continue;
 				}
 				this.log(

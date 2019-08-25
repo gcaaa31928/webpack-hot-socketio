@@ -9,11 +9,9 @@ if (!module.hot) {
 }
 var lastHash, log;
 var upToDate = function upToDate() {
-	console.log(lastHash, __webpack_hash__);
 	return lastHash.indexOf(__webpack_hash__) >= 0;
 };
 function check(context) {
-	console.trace(context);
 	module.hot
 		.check()
 		.then(function(updatedModules) {
