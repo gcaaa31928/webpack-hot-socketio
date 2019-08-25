@@ -79,7 +79,7 @@ var ansiColors = {
 var overlayStyles = {
   color: '#FF0000' // note the inclusion of "#" (these options would be the equivalent of div.style[option] = value)
 };
-var hotScript = 'webpack-hot-socketio/client?path=/__webpack_hmr&timeout=20000&reload=true&ansiColors=' + encodeURIComponent(JSON.stringify(ansiColors)) + '&overlayStyles=' + encodeURIComponent(JSON.stringify(overlayStyles));
+var hotScript = 'webpack-hot-socketio/client?path=/__webpack_hmr&port=8000&timeout=20000&reload=true&ansiColors=' + encodeURIComponent(JSON.stringify(ansiColors)) + '&overlayStyles=' + encodeURIComponent(JSON.stringify(overlayStyles));
 ```
 
 And you're all set!
