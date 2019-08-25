@@ -3,15 +3,15 @@
 * Install deps
 
 **NOTE**:
-> You shoude execute `npm install` command in parent folder first. Then run this command once again in `examples/` folder.
+> You shoude execute `yarn install` command in parent folder first. Then run this command once again in `examples/` folder.
 ```sh
-npm install
+yarn install
 ```
 * Start server
 ```sh
-npm start
+yarn start
 ```
-* Open page in browser http://localhost:1616
+* Open page in browser http://localhost:8080/index.html
 * Open the developer console
 * Edit `client.js` & save
 * Watch the page reload
@@ -25,5 +25,5 @@ There is also an example for multiple entry points in webpack.
 npm run start:multientry
 ```
 
-* Open page in browser http://localhost:1616/multientry
+* Open page in browser http://localhost:8080/multientry-index.html
 * Edit `client.js` or `extra.js` & save
