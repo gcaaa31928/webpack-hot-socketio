@@ -9,11 +9,13 @@
 		"webpack": "^4.39.1",
 		"webpack-hot-socketio": "file:.."
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"concurrently": "^4.1.2"
+	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node server.js",
-		"start:multientry": "WEBPACK_CONFIG=./webpack.config.multientry node server.js"
+		"start": "concurrently --names 'socket.io,http-server' 'node server.js' 'http-server .'",
+		"start:multientry": "WEBPACK_CONFIG=./webpack.config.multientry concurrently --names 'socket.io,http-server' 'node server.js' 'http-server .'"
 	},
 	"author": "",
 	"license": "ISC"
